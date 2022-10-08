@@ -115,7 +115,7 @@ or if using a `.vim` file:
 
 >
     lua << EOF
-    require('fzf-lua').setup{
+    require('smartyank').setup{
       ...
     }
     EOF
