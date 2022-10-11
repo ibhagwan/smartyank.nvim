@@ -16,9 +16,9 @@ local __defaults = {
   },
   osc52 = {
     enabled = true,
-    ssh_only = true,        -- OSC52 yank also in local sessions
-    silent = false,         -- false to disable the "n chars copied" echo
-    echo_hl = "Directory",  -- highlight group of the echo message
+    ssh_only = true,        -- false to OSC52 yank also in local sessions
+    silent = false,         -- true to disable the "n chars copied" echo
+    echo_hl = "Directory",  -- highlight group of the OSC52 echo message
   }
 }
 
@@ -38,13 +38,10 @@ M.osc52printf = function(...)
   local bytes = vim.fn.chansend(vim.v.stderr, osc52str)
   assert(bytes > 0)
   if not __config.osc52.silent then
-    local msg = string.format("[smartyank] %d chars copied using OSC52 (%d bytes)",
-      #str, bytes)
+    local msg = string.format(
+      "[smartyank] %d chars copied using OSC52 (%d bytes)", #str, bytes)
     if __config.osc52.echo_hl then
-      vim.api.nvim_echo({ {
-        string.format("[smartyank] %d chars copied using OSC52 (%d bytes)",
-          #str, bytes), __config.osc52.echo_hl
-      } }, false, {})
+      vim.api.nvim_echo({ {msg, __config.osc52.echo_hl} }, false, {})
     else
       vim.api.nvim_out_write(msg .. "\n")
     end
