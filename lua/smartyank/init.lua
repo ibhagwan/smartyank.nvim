@@ -32,9 +32,9 @@ M.setup = function(opts)
 end
 
 M.osc52printf = function(...)
-  local str = string.format(...)
+  local str = ...
   local base64 = require('smartyank.base64').encode(str)
-  local osc52str = string.format("\x1b]52;c;%s\x07", base64)
+  local osc52str = "\x1b]52;c;" .. base64 .. "\x07"
   local bytes = vim.fn.chansend(vim.v.stderr, osc52str)
   assert(bytes > 0)
   if not __config.osc52.silent then
