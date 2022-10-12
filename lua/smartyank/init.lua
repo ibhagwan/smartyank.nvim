@@ -31,8 +31,7 @@ M.setup = function(opts)
   M.setup_aucmd()
 end
 
-M.osc52printf = function(...)
-  local str = string.format(...)
+M.osc52printf = function(str)
   local base64 = require('smartyank.base64').encode(str)
   local osc52str = string.format("\x1b]52;c;%s\x07", base64)
   local bytes = vim.fn.chansend(vim.v.stderr, osc52str)
