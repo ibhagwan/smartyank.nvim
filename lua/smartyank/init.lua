@@ -36,7 +36,7 @@ end
 M.osc52printf = function(str, type)
   local base64 = require('smartyank.base64').encode(str)
   local osc52str = type == 'tmux'
-    and string.format([[\x1bPtmux;\x1b\x1b]52;c;%s\x07\x1b\\]], base64)
+    and string.format("\x1bPtmux;\x1b\x1b]52;c;%s\x07\x1b\\\\", base64)
     or string.format("\x1b]52;c;%s\x07", base64)
   local bytes = vim.fn.chansend(vim.v.stderr, osc52str)
   assert(bytes > 0)
