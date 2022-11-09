@@ -16,6 +16,8 @@ local __defaults = {
   },
   osc52 = {
     enabled = true,
+    -- escseq = 'tmux',     -- use tmux escape sequence, only enable if
+                            -- you're using tmux and have issues (see #4)
     ssh_only = true,        -- false to OSC52 yank also in local sessions
     silent = false,         -- true to disable the "n chars copied" echo
     echo_hl = "Directory",  -- highlight group of the OSC52 echo message
@@ -31,9 +33,11 @@ M.setup = function(opts)
   M.setup_aucmd()
 end
 
-M.osc52printf = function(str)
+M.osc52printf = function(str, type)
   local base64 = require('smartyank.base64').encode(str)
-  local osc52str = string.format("\x1b]52;c;%s\x07", base64)
+  local osc52str = type == 'tmux'
+    and string.format([[\x1bPtmux;\x1b\x1b]52;c;%s\x07\x1b\\]], base64)
+    or string.format("\x1b]52;c;%s\x07", base64)
   local bytes = vim.fn.chansend(vim.v.stderr, osc52str)
   assert(bytes > 0)
   if not __config.osc52.silent then
@@ -68,7 +72,7 @@ M.setup_actions = function()
           (not __config.osc52.ssh_only or vim.env.SSH_CONNECTION)
     end,
     yank = function(str)
-      M.osc52printf(str)
+      M.osc52printf(str, __config.osc52.escseq)
     end
   }
 
