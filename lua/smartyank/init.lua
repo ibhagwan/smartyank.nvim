@@ -2,9 +2,12 @@ local M = {}
 
 local __defaults = {
   highlight = {
-    enabled = true,         -- highlight yanked text
-    higroup = "IncSearch",  -- highlight group of yanked text
-    timeout = 2000,         -- timeout for clearing the highlight
+    -- highlight yanked text
+    enabled = true,
+    -- highlight group of yanked text
+    higroup = "IncSearch",
+    -- timeout for clearing the highlight
+    timeout = 2000,
   },
   clipboard = {
     enabled = true
@@ -12,15 +15,19 @@ local __defaults = {
   tmux = {
     enabled = true,
     -- remove `-w` to disable copy to host client's clipboard
-    cmd = { 'tmux', 'set-buffer', '-w' }
+    cmd = { "tmux", "set-buffer", "-w" }
   },
   osc52 = {
     enabled = true,
-    -- escseq = 'tmux',     -- use tmux escape sequence, only enable if
-                            -- you're using tmux and have issues (see #4)
-    ssh_only = true,        -- false to OSC52 yank also in local sessions
-    silent = false,         -- true to disable the "n chars copied" echo
-    echo_hl = "Directory",  -- highlight group of the OSC52 echo message
+    -- use tmux escape sequence, only enable if
+    -- you're using tmux and have issues (see #4)
+    -- escseq = 'tmux',
+    -- false to OSC52 yank also in local sessions
+    ssh_only = true,
+    -- true to disable the "n chars copied" echo
+    silent = false,
+    -- highlight group of the OSC52 echo message
+    echo_hl = "Directory",
   }
 }
 
@@ -34,17 +41,17 @@ M.setup = function(opts)
 end
 
 M.osc52printf = function(str, type)
-  local base64 = require('smartyank.base64').encode(str)
-  local osc52str = type == 'tmux'
-    and string.format("\x1bPtmux;\x1b\x1b]52;c;%s\x07\x1b\\\\", base64)
-    or string.format("\x1b]52;c;%s\x07", base64)
+  local base64 = require("smartyank.base64").encode(str)
+  local osc52str = type == "tmux"
+      and string.format("\x1bPtmux;\x1b\x1b]52;c;%s\x07\x1b\\\\", base64)
+      or string.format("\x1b]52;c;%s\x07", base64)
   local bytes = vim.fn.chansend(vim.v.stderr, osc52str)
   assert(bytes > 0)
   if not __config.osc52.silent then
     local msg = string.format(
       "[smartyank] %d chars copied using OSC52 (%d bytes)", #str, bytes)
     if __config.osc52.echo_hl then
-      vim.api.nvim_echo({ {msg, __config.osc52.echo_hl} }, false, {})
+      vim.api.nvim_echo({ { msg, __config.osc52.echo_hl } }, false, {})
     else
       vim.api.nvim_out_write(msg .. "\n")
     end
@@ -58,7 +65,7 @@ M.setup_actions = function()
   __actions[1] = {
     cond = function(valid)
       return valid and __config.clipboard and __config.clipboard.enabled and
-          vim.fn.has('clipboard') == 1
+          vim.fn.has("clipboard") == 1
     end,
     yank = function(str)
       pcall(vim.fn.setreg, "+", str)
@@ -115,7 +122,7 @@ M.setup_aucmd = function()
     fnc(vim.api.nvim_create_augroup(name, { clear = true }))
   end
 
-  augroup('SmartTextYankPost', function(g)
+  augroup("SmartTextYankPost", function(g)
     -- Setup our actions table
     if not __actions then M.setup_actions() end
 
@@ -126,7 +133,7 @@ M.setup_aucmd = function()
     -- If we are connected to tmux also copy to tmux buffer
     vim.api.nvim_create_autocmd("TextYankPost", {
       group = g,
-      pattern = '*',
+      pattern = "*",
       desc = "[smartyank] Copy to clipboard/tmux/OSC52",
       callback = function()
         -- check for local|global disable
@@ -134,7 +141,7 @@ M.setup_aucmd = function()
           return
         end
         local ok, yank_data = pcall(vim.fn.getreg, "0")
-        local valid_yank = ok and #yank_data > 0 and vim.v.operator == 'y'
+        local valid_yank = ok and #yank_data > 0 and vim.v.operator == "y"
         for _, a in ipairs(__actions) do
           if a.cond(valid_yank) then
             a.yank(yank_data)

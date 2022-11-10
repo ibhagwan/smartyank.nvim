@@ -10,4 +10,3 @@ vim.g.loaded_smartyank = 1
 
 -- Run our plugin and setup the autocmd
 require("smartyank")
-
