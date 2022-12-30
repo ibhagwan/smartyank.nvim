@@ -46,7 +46,8 @@ M.osc52printf = function(str, type)
       and string.format("\x1bPtmux;\x1b\x1b]52;c;%s\x07\x1b\\\\", base64)
       or string.format("\x1b]52;c;%s\x07", base64)
   local bytes = vim.fn.chansend(vim.v.stderr, osc52str)
-  assert(bytes > 0)
+  -- TODO: why does this return 0 on very large yanks? (#5)
+  -- assert(bytes > 0)
   if not __config.osc52.silent then
     local msg = string.format(
       "[smartyank] %d chars copied using OSC52 (%d bytes)", #str, bytes)
