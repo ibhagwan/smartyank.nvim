@@ -33,14 +33,14 @@ At first I was mad at neovim for polluting my clipboard every time I deleted
 or changed a text (using `d`, `c` or eve `s`) so I used the "blackhole"
 mappings in order to disable that functionality via:
 
->
+>vim
     nnoremap d "_d
 <
 But then I realized I actually wanted some of the deleted texts and I was also
 "missing out" on the "true way of the vimmer" so I decided to use blackhole
 mappings only with the `<leader>` key:
 
->
+>vim
     nnoremap <leader>d "_d
 <
 The above was much better, but this added to my mental overhead of having to
@@ -87,12 +87,12 @@ INSTALLATION                                          *smartyank-installation*
 
 Using vim-plug <https://github.com/junegunn/vim-plug>
 
->
+>vim
     Plug 'ibhagwan/smartyank.nvim'
 <
 Using packer.nvim <https://github.com/wbthomason/packer.nvim>
 
->
+>lua
     use { 'ibhagwan/smartyank.nvim' }
 <
 **Notes:**
@@ -106,14 +106,14 @@ CONFIGURATION                                        *smartyank-configuration*
 
 Configuring additional options can be done via the `setup` function:
 
->
+>lua
     require('smartyank').setup {
         ...
     }
 <
 or if using a `.vim` file:
 
->
+>lua
     lua << EOF
     require('smartyank').setup{
       ...
@@ -126,7 +126,7 @@ DEFAULT OPTIONS                                    *smartyank-default-options*
 
 Below is a list of all default options:
 
->
+>lua
     require('smartyank').setup {
       highlight = {
         enabled = true,         -- highlight yanked text
