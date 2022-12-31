@@ -1,3 +1,16 @@
+*smartyank.txt*        For Neovim >= 0.7.0       Last change: 2022 December 31
+
+==============================================================================
+Table of Contents                                *smartyank-table-of-contents*
+
+The copy-pasta rabbit hole ............ |smartyank-the-copy-pasta-rabbit-hole|
+Background ............................................ |smartyank-background|
+What is SmartYank .............................. |smartyank-what-is-smartyank|
+Installation ........................................ |smartyank-installation|
+Configuration ...................................... |smartyank-configuration|
+Default Options .................................. |smartyank-default-options|
+Tmux ........................................................ |smartyank-tmux|
+
 ==============================================================================
 SMARTYANK.NVIM                                      *smartyank-smartyank.nvim*
 
