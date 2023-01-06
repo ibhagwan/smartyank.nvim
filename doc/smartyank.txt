@@ -1,4 +1,4 @@
-*smartyank.txt*        For Neovim >= 0.7.0       Last change: 2022 December 31
+*smartyank.txt*        For Neovim >= 0.7.0       Last change: 2022 November 09
 
 ==============================================================================
 Table of Contents                                *smartyank-table-of-contents*
