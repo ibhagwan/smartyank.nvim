@@ -28,7 +28,9 @@ local __defaults = {
     silent = false,
     -- highlight group of the OSC52 echo message
     echo_hl = "Directory",
-  }
+  },
+  -- default yank condition
+  validate_yank = function() return vim.v.operator == "y" end,
 }
 
 local __config = vim.deepcopy(__defaults)
@@ -141,8 +143,14 @@ M.setup_aucmd = function()
         if vim.b.smartyank_disable or vim.g.smartyank_disable then
           return
         end
-        local ok, yank_data = pcall(vim.fn.getreg, "0")
-        local valid_yank = ok and #yank_data > 0 and vim.v.operator == "y"
+        -- get yank data from the unnamed register (not yank register 0)
+        -- or we will acquire the wrong yank data when `validate_yank == false`
+        local ok, yank_data = pcall(vim.fn.getreg, [["]])
+        local fn_validate_yank =
+            __config.validate_yank == false and function() return true end
+            or type(__config.validate_yank) == "function" and __config.validate_yank
+            or __defaults.validate_yank
+        local valid_yank = ok and #yank_data > 0 and fn_validate_yank()
         for _, a in ipairs(__actions) do
           if a.cond(valid_yank) then
             a.yank(yank_data)
