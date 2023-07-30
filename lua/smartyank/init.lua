@@ -118,6 +118,8 @@ M.setup_actions = function()
       table.insert(__actions, a)
     end
   end
+
+  return __actions
 end
 
 M.setup_aucmd = function()
