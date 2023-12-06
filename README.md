@@ -25,7 +25,7 @@ managed by `<Cmd-c>|<Cmd-v>` getting used to registers and the way the
 `clipboard` option works took some time.
 
 At first I was mad at neovim for polluting my clipboard every time I deleted
-or changed a text (using `d`, `c` or eve `s`) so I used the "blackhole"
+or changed a text (using `d`, `c` or even `s`) so I used the "blackhole"
 mappings in order to disable that functionality via:
 ```vim
 nnoremap d "_d
