@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "runtime.version": "LuaJIT",
+  "diagnostics": {
+    "enable": true,
+    "globals": ["vim"],
+    "neededFileStatus": {
+      "codestyle-check": "Any"
+    },
+    "disable": ["need-check-nil", "missing-parameter", "cast-local-type"]
+  },
+  "workspace": {
+    "library": [
+      "lua",
+      "$VIMRUNTIME/lua",
+      "${3rd}/luv/library",
+    ],
+    "checkThirdParty": false,
+    "maxPreload": 2000,
+    "preloadFileSize": 1000,
+    "ignoreDir": ["tests/"]
+  },
+  "telemetry.enable": false
+}
