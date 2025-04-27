@@ -1,3 +1,4 @@
+local hl = vim.hl or vim.highlight
 local M = {}
 
 local __defaults = {
@@ -104,7 +105,7 @@ M.setup_actions = function()
       return __config.highlight and __config.highlight.enabled
     end,
     yank = function(_)
-      vim.highlight.on_yank({
+      hl.on_yank({
         higroup = __config.highlight.higroup,
         timeout = __config.highlight.timeout
       })
